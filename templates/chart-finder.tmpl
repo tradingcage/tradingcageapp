@@ -1,0 +1,13 @@
+{{ template "base_top_beginning" . }}
+<link rel="stylesheet" href="/static/bundles/bundle.css?hash={{.buildHash}}" />
+{{ template "base_top_end" . }}
+
+<div class="flex flex-col h-screen" id="chart-finder">
+</div>
+  
+<script src="/static/thirdparty/d3.js?hash={{.buildHash}}"></script>
+<script src="/static/thirdparty/d3fc.js?hash={{.buildHash}}"></script>
+<script src="/static/thirdparty/firchart.js?hash={{.buildHash}}"></script>
+<script src="/static/bundles/bundle.js?hash={{.buildHash}}"></script>
+
+{{ template "base_bottom" . }}

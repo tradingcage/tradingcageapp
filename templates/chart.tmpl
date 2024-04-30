@@ -1,0 +1,19 @@
+{{ template "base_top_beginning" . }}
+<link rel="stylesheet" href="/static/bundles/bundle.css?hash={{.buildHash}}" />
+{{ template "base_top_end" . }}
+
+<div class="flex flex-col min-h-screen m-0">
+
+  <div class="flex flex-row flex-grow">
+    <div class="flex-grow flex flex-col" id="chart">
+    </div>
+  </div>
+  
+  <script src="/static/thirdparty/d3.js?hash={{.buildHash}}"></script>
+  <script src="/static/thirdparty/d3fc.js?hash={{.buildHash}}"></script>
+  <script src="/static/thirdparty/firchart.js?hash={{.buildHash}}"></script>
+  <script src="/static/bundles/bundle.js?hash={{.buildHash}}"></script>
+
+</div>
+
+{{ template "base_bottom" . }}

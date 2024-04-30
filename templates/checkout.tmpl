@@ -1,0 +1,26 @@
+{{ template "base_top_beginning" . }}
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+const stripe = Stripe({{.PublishableKey}});
+
+initialize();
+
+// Create a Checkout Session as soon as the page loads
+async function initialize() {
+  const checkout = await stripe.initEmbeddedCheckout({
+    clientSecret: {{ .ClientSecret }},
+  });
+
+  // Mount Checkout
+  checkout.mount('#checkout');
+}
+</script>
+{{ template "base_top_end" . }}
+<div class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="w-full bg-white rounded-lg shadow-md p-8 text-center my-16">
+        <h2 class="text-3xl font-bold mb-4 text-gray-900">Checkout</h2>
+        <p class="text-lg text-gray-700 mb-8">Complete your purchase to access Trading Cage.</p>
+        <div id="checkout"></div>
+    </div>
+</div>
+{{ template "base_bottom" . }}

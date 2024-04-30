@@ -1,0 +1,2 @@
+.overlay.svelte-9boro{position:fixed;top:0;left:0;right:0;bottom:0;background-color:rgba(0, 0, 0, 0.5);display:flex;justify-content:center;align-items:center;z-index:1}.popup.svelte-9boro{background-color:white;padding:20px;border-radius:5px;box-shadow:0 5px 15px rgba(0, 0, 0, 0.3)}
+@keyframes svelte-eko7of-clockwiseSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}.rotate-clockwise.svelte-eko7of{animation:svelte-eko7of-clockwiseSpin 1s linear infinite}

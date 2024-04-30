@@ -1,0 +1,115 @@
+{{ template "base_top" . }}
+    
+<div class="min-h-screen bg-gray-100 py-4 flex flex-col justify-center sm:py-8">
+    <div class="container mx-auto px-4 sm:px-0">
+        <div class="bg-white shadow rounded-3xl p-6">
+            <div class="mb-4">
+                <div class="flex flex-wrap -mx-3 items-center">
+                    <div class="px-3 w-full md:w-auto">
+                        <div class="h-14 w-14 bg-blue-200 rounded-full flex justify-center items-center text-blue-600 text-2xl font-mono">
+                          <i class="iconoir-graph-up"></i>
+                        </div>
+                    </div>
+                    <div class="px-3 grow">
+                        <h2 class="text-xl font-semibold text-gray-700">{{ .account.Name }}</h2>
+                        <p class="text-sm text-gray-500">Performance Summary</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-6">
+                <div id="accountValueChart" class="w-full bg-white" style="height: 400px;"></div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-8">
+                <div class="px-3 w-full md:w-1/2 xl:w-1/3">
+                    <label class="text-gray-700">Realized Account Value</label>
+                    <div class="text-2xl font-semibold">${{ printf "%.2f" .account.RealizedPnL }}</div>
+                </div>
+                <div class="px-3 w-full md:w-1/2 xl:w-1/3">
+                    <label class="text-gray-700">Win Rate</label>
+                    <div class="text-2xl font-semibold">{{ printf "%.2f" .tradeMetrics.WinRate }}%</div>
+                </div>
+                <div class="px-3 w-full md:w-1/2 xl:w-1/3">
+                    <label class="text-gray-700">Profit Factor</label>
+                    <div class="text-2xl font-semibold">{{ printf "%.2f" .tradeMetrics.ProfitFactor }}</div>
+                </div>
+                <div class="px-3 w-full md:w-1/2 xl:w-1/3">
+                    <label class="text-gray-700">Largest Loss</label>
+                    <div class="text-2xl font-semibold">${{ printf "%.2f" .tradeMetrics.LargestLoss }}</div>
+                </div>
+                <div class="px-3 w-full md:w-1/2 xl:w-1/3">
+                    <label class="text-gray-700">Largest Profit</label>
+                    <div class="text-2xl font-semibold">${{ printf "%.2f" .tradeMetrics.LargestProfit }}</div>
+                </div>
+                <div class="px-3 w-full md:w-1/2 xl:w-1/3">
+                    <label class="text-gray-700">Median Loss</label>
+                    <div class="text-2xl font-semibold">${{ printf "%.2f" .tradeMetrics.MedianLoss }}</div>
+                </div>
+                <div class="px-3 w-full md:w-1/2 xl:w-1/3">
+                    <label class="text-gray-700">Median Profit</label>
+                    <div class="text-2xl font-semibold">${{ printf "%.2f" .tradeMetrics.MedianProfit }}</div>
+                </div>
+                <div class="px-3 w-full md:w-1/2 xl:w-1/3">
+                    <label class="text-gray-700">Number of Trades</label>
+                    <div class="text-2xl font-semibold">{{ len .trades }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mt-12">
+      <a href="/download-trades?accountID={{ .account.ID }}" class="inline-block text-blue-500 underline px-6 py-2 text-sm font-medium hover:text-blue-700 transition-colors duration-200">Download Trades as Excel Spreadsheet</a>
+    </div>
+</div>
+<script src="https://d3js.org/d3.v6.min.js"></script>
+<script src="https://unpkg.com/@d3fc/d3fc"></script>
+<script>
+const calculateAccountValueOverTime = (trades, startingBalance) => {
+  trades.sort((a, b) => (new Date(a.exitedAt).getTime()) - (new Date(b.exitedAt).getTime()))
+  let runningTotal = startingBalance;
+  const accountValues = [];
+  for (let i = trades.length - 1; i >= 0; i--) {
+    let trade = trades[i];
+    runningTotal -= trade.profitOrLoss;
+    accountValues.push({
+      date: new Date(trade.exitedAt),
+      value: runningTotal
+    });
+  }
+  accountValues.sort((a, b) => a.date - b.date);
+  return accountValues;
+};
+const renderLineChart = (data, selector) => {
+  const container = d3.select(selector);
+  const containerWidth = container.node().getBoundingClientRect().width;
+  const margin = { top: 20, right: 30, bottom: 30, left: 50 };
+  const width = containerWidth - margin.left - margin.right;
+  const height = 400 - margin.top - margin.bottom;
+  const xScale = d3.scaleTime().domain(d3.extent(data, d => d.date)).range([0, width]);
+  const yScale = d3.scaleLinear().domain(d3.extent(data, d => d.value)).range([height, 0]);
+  const line = d3.line()
+    .x(d => xScale(d.date))
+    .y(d => yScale(d.value));
+  const svg = container.append('svg')
+    .attr('width', containerWidth)
+    .attr('height', height + margin.top + margin.bottom)
+    .append('g')
+    .attr('transform', `translate(${margin.left},${margin.top})`);
+  svg.append('g')
+    .attr('transform', `translate(0,${height})`)
+    .call(d3.axisBottom(xScale));
+  svg.append('g')
+    .call(d3.axisLeft(yScale));
+  svg.append('path')
+    .datum(data)
+    .attr('fill', 'none')
+    .attr('stroke', 'steelblue')
+    .attr('stroke-width', 1.5)
+    .attr('d', line);
+};
+const trades = {{.trades}};
+if (trades != null && trades.length > 0) {
+  const accountValueData = calculateAccountValueOverTime(trades, {{.account.RealizedPnL}}).concat({ date: new Date({{.account.Date}}), value: {{.account.RealizedPnL}} });
+  renderLineChart(accountValueData, '#accountValueChart');
+}
+</script>
+
+{{ template "base_bottom" . }}

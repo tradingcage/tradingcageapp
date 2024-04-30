@@ -1,0 +1,124 @@
+
+{{ template "base_top_beginning" . }}
+<style>
+  @font-face {
+    font-family: 'HussarSzturm';
+    src: url('/static/font/HussarSzturm-Alxg.otf') format('opentype');
+  }
+</style>
+{{ template "base_top_end" . }}
+
+<main>
+
+  <section class="flex items-center justify-center bg-cover bg-center py-32 relative" style="background-image: url('/static/img/trading-cage-cover-image.png');">
+    <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+    <div class="max-w-xl flex flex-col items-center relative z-10">
+      <h1 class="text-6xl font-bold mb-4 text-white" style="font-family: 'HussarSzturm';">Trading Cage</h1>
+      <a class="bg-black text-2xl text-white font-bold py-8 px-16 rounded mt-8 cursor-pointer hover:bg-gray-700 border-2 border-gold-500 focus:outline-none focus:border-gold-600 w-fit" href="/register">Join with a 7-day free trial</a>
+      <a class="mt-4 bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded cursor-pointer hover:bg-gray-400 focus:outline-none focus:bg-gray-500 border-2 border-gray-600 w-fit" href="/login">Already a member?</a>
+    </div>
+  </section>
+
+  <div class="bg-gray-100">
+    <div class="flex flex-col xl:grid xl:grid-cols-2 gap-4 max-w-7xl mx-auto">
+  
+      <section class="py-10 max-w-xl mx-auto">
+        <h2 class="text-center text-4xl font-bold text-gray-900 mb-6">Why Trading Cage?</h2>
+        <p class="text-lg text-gray-700 mb-4">Are you tired of losing money in the markets?</p>
+        <p class="text-lg text-gray-700 mb-4">Or perhaps you're just getting started, and you want to prove that the strategies you've learned actually work?</p>
+        <p class="text-lg text-gray-700 mb-4">With Trading Cage, you can test any trading idea against 40+ years of historical futures data. Intraday, longer term, discretionary, systematic, technical, quantitative -- it's all here.</p>
+        <p class="text-lg text-gray-700 mb-4">Replay the last 4 decades of market action, down to the second.</p>
+        <p class="text-lg text-gray-700 mb-4">Develop an edge, train your mind, and refine your strategy in a risk-free environment. Learn how to make money ... without losing money.</p>
+      </section>
+    
+      <section class="flex justify-center items-center bg-gray-200 xl:bg-gray-100 xl:ml-8">
+        <iframe width="660" height="371" src="https://www.youtube.com/embed/30T-FvJ-cqw" title="Trading Cage Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </section>
+  
+    </div>
+  </div>
+
+  <div class="flex flex-col-reverse xl:flex-row items-center xl:grid xl:grid-cols-2 gap-4 max-w-7xl mx-auto bg-white mt-8">
+
+    <section>
+      <img src="/static/img/screenshot-1.png" alt="Trading Cage screenshot" />
+    </section>
+
+    <section class="py-10 bg-white">
+      <div class="max-w-xl mx-auto">
+        <h3 class="text-center text-3xl font-bold text-gray-900 mb-4">How does Trading Cage compare to other simulators?</h3>
+        <p class="text-lg text-gray-700 mb-4">Trading Cage is the <i>only</i> market replay simulator with:</p>
+        <ul class="text-lg text-gray-700 list-disc ml-4">
+          <li><b>40+ years of historical data</b> -- view intraday charts for the E-mini back to 1997, and the old "big" equity futures back to 1982</li>
+          <li>The ability to <b>watch bars develop in real time</b>, second by second</li>
+          <li>Exclusive focus on the major futures contracts</li>
+          <li><a href="https://github.com/tradingcage/firchart" class="underline">FirChart</a>, the best open-source charting library</li>
+        </ul>
+        <p class="mt-4 text-lg text-gray-700 mb-4">Sign up for the free 7-day trial with NO RISK and try it out for yourself. If it's not for you, you can cancel within the first 7 days and you won't receive any charges.</p>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="bg-gray-100">
+    <div class="flex flex-col xl:flex-row items-center xl:grid xl:grid-cols-2 gap-4 max-w-7xl mx-auto mt-8 pb-8">
+    
+      <section class="mt-8">
+        <div class="max-w-xl mx-auto">
+          <h3 class="text-center text-3xl font-bold text-gray-900 mb-4">Your Path to Consistent Profitability</h3>
+          <p class="text-lg text-gray-700 mb-4">Put in your 10,000 hours and <b>become a consistently profitable trader</b> by proving your strategies against the market.</p>
+        <p class="text-lg text-gray-700 mb-4">Get <b>10 years of experience in 10 weeks</b>. Measure your win rate and profit factor over hundreds of trades to ensure you have a positive trader's equation.</p>
+        <p class="text-lg text-gray-700">Most importantly, by studying the past you will gain the <b>confidence</b> you need to make it in the markets. Start using Trading Cage today and <b>never doubt yourself again.</b></p>
+        </div>
+      </section>
+    
+      <section>
+        <img src="/static/img/performance-summary.jpeg" alt="Trading Cage screenshot" />
+      </section>
+  
+    </div>
+  </div>
+
+  <div class="flex flex-col-reverse xl:flex-row items-center xl:grid xl:grid-cols-2 gap-4 max-w-7xl mx-auto mt-8 pb-8">
+
+    <section class="flex flex-col items-center mt-8">
+      <div class="bg-emerald-600 text-2xl text-white font-bold py-8 px-16 rounded mb-8 cursor-pointer hover:bg-emerald-700 focus:outline-none focus:bg-emerald-700 w-fit"><a href="/register">Sign up today and get 1 week free!</a></div>
+    </section>
+
+    <section class="mt-8">
+      <div class="max-w-xl mx-auto">
+        <h3 class="text-center text-3xl font-bold text-gray-900 mb-4">How much does it cost?</h3>
+        <p class="text-lg text-gray-700 mb-4">After your 7-day free trial, you will be billed $19 per month, or <b>less than 0.5 points</b> in the E-mini S&P 500 index on a single contract.</p>
+      <p class="text-lg text-gray-700 mb-4">Pay $190 annually, or less than 4 points in ES, and get <b>2 months free</b>.</p>
+      <p class="text-lg text-gray-700"><b>Save $5 per month or $50 annually</b> by following Trading Cage on <a href="https://twitter.com/tradingcage" class="underline">X</a>, subscribing to the <a href="https://www.youtube.com/@tradingcage" class="underline">YouTube</a> channel, and joining the <a href="https://discord.gg/wm95QSp5cv" class="underline">Discord</a>. Email <a class="underline" href="mailto:mail@tradingcage.com">mail@tradingcage.com</a> with screenshots to claim the discount.</p>
+      </div>
+    </section>
+
+  </div>
+
+  <section class="flex justify-center items-center mt-8">
+    <a href="mailto:mail@tradingcage.com" class="text-gray-400 underline">
+      <img src="/static/icons/email.svg" alt="Email contact link" class="rounded-full mr-4 h-16 w-16 object-cover object-center mb-4 sm:mb-0"/>
+    </a>
+    <a target="_blank" href="https://twitter.com/tradingcage" class="text-gray-400 underline">
+      <img src="/static/icons/x.svg" alt="Twitter link" class="rounded-full mr-4 h-16 w-16 object-cover object-center mb-4 sm:mb-0"/>
+    </a>
+    <a target="_blank" href="https://www.youtube.com/@tradingcage" class="text-gray-400 underline">
+      <img src="/static/icons/youtube.svg" alt="YouTube link" class="rounded-full mr-4 h-16 w-16 object-cover object-center mb-4 sm:mb-0"/>
+    </a>
+    <a target="_blank" href="https://discord.gg/wm95QSp5cv" class="text-gray-400 underline">
+      <img src="/static/icons/discord.svg" alt="Discord link" class="rounded-full mr-6 h-16 w-16 object-cover object-center mb-4 sm:mb-0"/>
+    </a>
+    <a target="_blank" href="https://github.com/tradingcage/firchart" class="text-gray-400 underline">
+      <img src="/static/icons/github.svg" alt="GitHub link" class="rounded-full mr-4 h-10 w-10 object-cover object-center mb-4 sm:mb-0"/>
+    </a>
+  </section>
+
+  <footer class="bg-gray-800 text-center p-4 text-gray-400 mt-8">
+    <p>Join the Trading Cage community on <a href="https://twitter.com/tradingcage" class="text-gray-400 underline">Twitter</a>, <a href="https://www.youtube.com/@tradingcage" class="text-gray-400 underline">YouTube</a>, and <a href="https://discord.gg/wm95QSp5cv" class="text-gray-400 underline">Discord</a>.</p>
+    <p class="mt-2">&copy; 2024 Trading Cage, LLC. All rights reserved.</p>
+  </footer>
+  
+</main>
+
+{{ template "base_bottom" . }}

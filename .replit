@@ -1,0 +1,16 @@
+run="./run.sh"
+
+modules = ["go", "nodejs-20:v8-20230920-bd784b9"]
+
+[gitHubImport]
+requiredFiles = [".replit"]
+
+[deployment]
+build = ["sh", "-c", "go build main.go"]
+run = ["sh", "-c", "./main"]
+ignorePorts = false
+deploymentTarget = "gce"
+
+[[ports]]
+localPort = 8080
+externalPort = 80

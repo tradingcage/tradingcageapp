@@ -1,0 +1,184 @@
+{{ template "base_top" . }}
+
+<div class="bg-gray-100 min-h-screen">
+
+  <div class="container mx-auto px-4">
+          <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center py-6">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center">
+        <img src="/static/img/logo.png" alt="Trading Cage Logo" class="rounded-full mr-4 h-16 w-16 object-cover object-center mb-4 sm:mb-0">
+        <div>
+          <h1 class="text-2xl font-semibold text-gray-800">Trading Cage</h1>
+          <p class="text-gray-600">Trading Cage is a market replay simulator for futures. Watch the <a target="_blank" href="https://www.youtube.com/watch?v=30T-FvJ-cqw" class="text-blue-500 hover:text-blue-700 underline">demo video</a> to learn how it works, or jump right in with an account below.</p>
+        </div>
+      </div>
+      <div class="relative text-center mt-4 sm:mt-0 group">
+        <button id="settings-button" class="p-2 rounded mt-4 group-hover:bg-gray-200">
+          <i class="iconoir-settings text-2xl"></i>
+        </button>
+        <div id="settings-dropdown" class="absolute top-14 right-0 hidden group-hover:inline-block bg-white border rounded shadow-lg py-1 z-50 min-w-48">
+          {{ if .ManageSubscriptionLink }}
+          <p><a href="{{.ManageSubscriptionLink}}" class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100">Manage subscription</a></p>
+          {{ end }}
+          <p><a href="/logout" class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100">Log out</a></p>
+        </div>
+      </div>
+    </header>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+          <div class="relative bg-white shadow-lg rounded-lg p-6 border-2 border-emerald-300">
+            <p class="font-bold">Time Traveling Account</p>
+            <p class="account-date">1970 - Present</p>
+            <p>Account Balance: Unlimited</p>
+            <a href="/chart" class="block mt-4 text-center bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded">
+                Go to Time Traveling Chart
+            </a>
+          </div>
+          {{ range .Accounts }}
+          <div class="relative bg-white shadow-lg rounded-lg p-6 border-2 border-blue-300" data-account-date="{{ .Date }}">
+            <div class="absolute top-0 right-0 m-1 flex">
+              <a href="/analytics/{{ .ID }}">
+                <div class="p-1 hover:bg-gray-200 rounded cursor-pointer">
+                  <i class="iconoir-graph-up"></i>
+                </div>
+              </a>
+              <div class="p-1 hover:bg-gray-200 rounded cursor-pointer">
+                <i class="iconoir-edit-pencil" onclick="showEditAccountModal({{ .ID }}, '{{ .Name }}')"></i>
+              </div>
+              <div class="p-1 hover:bg-gray-200 rounded cursor-pointer" onclick="deleteAccount('{{ .ID }}')">
+                <i class="iconoir-trash"></i>
+              </div>
+            </div>
+            <p class="font-bold">{{.Name}}</p>
+            <p class="account-date">Current date: <span class="account-date-value"></span></p>
+            <p>Account Balance: ${{ printf "%.2f" .RealizedPnL }}</p>
+            <a href="/simulator/{{ .ID }}" class="block mt-4 text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Go to Simulator
+            </a>
+          </div>
+          {{ end }}
+          <div class="relative bg-white shadow-lg rounded-lg p-6 border-2 border-gray-300">
+            <p class="text-lg text-center font-bold mb-6">Create a new account</p>
+            <div class="flex flex-col justify-center items-center">
+              <i class="iconoir-plus-circle text-6xl text-gray-500 hover:text-gray-800 cursor-pointer" onclick="document.getElementById('modal-create-account').classList.toggle('hidden')"></i>
+            </div>
+          </div>
+      </div>
+      <div id="modal-create-account" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div class="bg-white rounded-lg p-6 relative min-w-80">
+            <button onclick="document.getElementById('modal-create-account').classList.toggle('hidden')" class="absolute top-0 right-0 mt-4 mr-4 bg-gray-200 hover:bg-gray-300 text-gray-900 font-semibold py-1 px-2 rounded">
+                X
+            </button>
+            <p class="text-lg font-bold mb-4">Create a New Account</p>
+            <form method="POST" action="/create-account">
+              <div class="mb-4">
+                  <label for="account-name" class="block text-gray-700 text-sm font-bold mb-2">Account Name:</label>
+                  <input type="text" id="account-name" name="account-name" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+              </div>
+              <div class="mb-4">
+                  <label for="start-date" class="block text-gray-700 text-sm font-bold mb-2">Start Date:</label>
+                  <input type="date" id="start-date" name="start-date" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+              </div>
+              <div class="mb-4">
+                  <label for="starting-capital" class="block text-gray-700 text-sm font-bold mb-2">Starting Capital:</label>
+                  <input type="number" id="start-date" name="starting-capital" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="25000" min="0" step="0.01" placeholder="25000">
+              </div>
+              <input type="submit" value="Create Account" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline cursor-pointer">
+          </form>
+        </div>
+      </div>
+  </div>
+  <div id="modal-edit-account" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+    <div class="bg-white rounded-lg p-6 relative">
+        <button onclick="document.getElementById('modal-edit-account').classList.toggle('hidden')" class="absolute top-0 right-0 mt-4 mr-4 bg-gray-200 hover:bg-gray-300 text-gray-900 font-semibold py-1 px-2 rounded">
+            X
+        </button>
+        <p class="text-lg font-bold mb-4">Edit Account Name</p>
+        <form id="form-edit-account" action="javascript:void(0);">
+          <div class="mb-4">
+              <label for="edit-account-name" class="block text-gray-700 text-sm font-bold mb-2">New Account Name:</label>
+              <input type="text" id="edit-account-name" name="edit-account-name" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+              <input type="hidden" id="edit-account-id" name="edit-account-id">
+          </div>
+          <input type="submit" value="Update Account" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline cursor-pointer">
+      </form>
+    </div>
+  </div>
+
+  <div id="support-icon" class="fixed bottom-4 right-4 cursor-pointer group">
+    <div class="rounded-full bg-purple-400 hover:bg-purple-500 text-white p-1 text-lg flex items-center  w-auto overflow-hidden max-w-xs">
+      <span class="text-4xl iconoir-question-mark"></span>
+      <span id="support-text" class="ml-4 hidden group-hover:inline-block">Having trouble? Contact support via <a href="mailto:mail@tradingcage.com" class="underline">email</a> or <a href="https://discord.gg/wm95QSp5cv" class="underline">Discord</a>.</span>
+    </div>
+  </div>
+
+  
+</div>
+<script>
+var accounts = {{ .Accounts }};
+
+document.addEventListener('DOMContentLoaded', function() {
+  const accountDates = document.querySelectorAll('.account-date-value');
+
+  accountDates.forEach(function(dateElement) {
+    const parentElement = dateElement.closest('div[data-account-date]');
+    const accountDate = parentElement.getAttribute('data-account-date');
+    const date = new Date(accountDate); 
+    dateElement.textContent = date.toLocaleString();
+  });
+});
+
+function deleteAccount(accountID) {
+    if (!confirm('Are you sure you want to delete this account?')) return;
+    fetch('/account/' + accountID, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.reload(); // Reload the page if the delete operation was successful
+        } else {
+            response.json().then(data => console.log('Error: ' + data.error));
+        }
+    })
+    .catch(error => {
+        console.log('Error: ' + error.message);
+    });
+}
+
+// Function to show the account editing modal
+function showEditAccountModal(accountID, accountName) {
+  document.getElementById('edit-account-id').value = accountID; // Set hidden input value
+  document.getElementById('edit-account-name').value = accountName; // Set input value to current name
+  document.getElementById('modal-edit-account').classList.toggle('hidden'); // Show the modal
+}
+// Event listener for form submission
+document.getElementById('form-edit-account').addEventListener('submit', function() {
+  const accountID = document.getElementById('edit-account-id').value;
+  const newAccountName = document.getElementById('edit-account-name').value;
+  // Call function to update account name
+  updateAccountName(accountID, newAccountName);
+});
+// Function to update the account name
+function updateAccountName(accountID, newAccountName) {
+  fetch('/update-account-name', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ accountID: Number(accountID), newName: newAccountName }), // Send JSON payload
+  }).then(response => {
+    if (response.ok) {
+      document.getElementById('modal-edit-account').classList.toggle('hidden'); // Close the modal
+      window.location.reload(); // Reload the page if the update was successful
+    } else {
+      response.json().then(data => console.log('Error: ' + data.error));
+    }
+  }).catch(error => {
+    console.log('Error: ' + error.message);
+  });
+}
+
+</script>
+
+{{ template "base_bottom" . }}
